@@ -48,7 +48,7 @@ accelerate launch train.py \
 - `--output-dir`: the path to save checkpoints and logs
 - `--enc-type`:  any self-supervised model
 
-### 5. cell samples
+### 5. Cell Samples
 
 ```bash
 torchrun --nnodes=1 --nproc_per_node=1 --master_port=29501 generate.py --ckpt 'exps/linear-mae-b-enc8-pbmc/checkpoints/0600000.pt' --model scDiT-B/4 --num-classes 11 --data_name 'pbmc' --num-fid-samples 3072 --path-type=linear --encoder-depth=8 --projector-embed-dims=768 --per-proc-batch-size=128 --mode=ode --num-steps=50 --heun --cfg-scale=1.0 --guidance-high=1.0
