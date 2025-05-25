@@ -1,5 +1,5 @@
 # ESCFD: Probabilistic Flow Diffusion Model for AcceleratedHigh-Quality Single-Cell RNA-seq Data Synthesis
-
+[![DOI](https://zenodo.org/badge/986434945.svg)](https://doi.org/10.5281/zenodo.15508768)
 ### 1. Dataset Download
 
 We with reference to the datasets provided by scDiffusion, PBMC and Muris can be found in scDiffusion ([PBMC and Muris](https://github.com/EperLuo/scDiffusion?tab=readme-ov-file))
