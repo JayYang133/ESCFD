@@ -89,8 +89,8 @@ torchrun --nnodes=1 --nproc_per_node=1  generate.py --ckpt 'exps/linear-mae-b-en
 torchrun --nnodes=1 --nproc_per_node=1  generate.py --ckpt 'exps/linear-mae-b-enc8-brainsmall/checkpoints/0800000.pt' --model scDiT-B/4 --num-classes 8 --data_name 'brainsmall' --num-fid-samples 3072 --path-type=linear --encoder-depth=8 --projector-embed-dims=768 --per-proc-batch-size=128 --mode=ode --num-steps=50 --heun --cfg-scale=1.0 --guidance-high=1.0
 ```
 
-### 7. cell samples
-Our datasets is comming soon
+### 7. cell samples output and weight
+Our weight and datasets is comming soon
 
 
 ### 8. Acknowledgement
