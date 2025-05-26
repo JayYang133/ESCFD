@@ -50,6 +50,7 @@ python main_pretrain.py \
     --warmup_epochs 40 \
     --blr 1.5e-4 --weight_decay 0.05
 ```
+The weights of the self-supervised encoder are placed in the ‘ckpt’ folder.
 
 ### 5. Diffusion Training
 
@@ -81,6 +82,7 @@ accelerate launch train.py \
 - `--output-dir`: the path to save checkpoints and logs
 - `--enc-type`:  any self-supervised model
 
+Diffusion weights are placed in the ‘exps’ folder.
 ### 6. cell samples
 
 ```bash
@@ -90,7 +92,7 @@ torchrun --nnodes=1 --nproc_per_node=1  generate.py --ckpt 'exps/linear-mae-b-en
 ```
 
 ### 7. cell samples output and weight
-Our weight and datasets is comming soon
+Our weight and datasets is comming soon.
 
 
 ### 8. Acknowledgement
