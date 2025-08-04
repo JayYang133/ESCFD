@@ -25,7 +25,6 @@ from models.scDiT import scDiT_models
 from loss import SILoss
 from utils import load_encoders
 
-# import wandb_utils
 import wandb
 import math
 from torchvision.utils import make_grid
@@ -35,7 +34,6 @@ from torchvision.transforms import Normalize
 logger = get_logger(__name__)
 
 @torch.no_grad()
-#采样后验分布函数
 def sample_posterior(moments, latents_scale=1., latents_bias=0.):
     device = moments.device
     
@@ -48,11 +46,7 @@ def sample_posterior(moments, latents_scale=1., latents_bias=0.):
 
 
 @torch.no_grad()
-#更新EMA模型函数
 def update_ema(ema_model, model, decay=0.9999):
-    """
-    Step the EMA model towards the current model.
-    """
     ema_params = OrderedDict(ema_model.named_parameters())
     model_params = OrderedDict(model.named_parameters())
 
@@ -63,9 +57,6 @@ def update_ema(ema_model, model, decay=0.9999):
 
 
 def create_logger(logging_dir):
-    """
-    Create a logger that writes to a log file and stdout.
-    """
     logging.basicConfig(
         level=logging.INFO,
         format='[\033[34m%(asctime)s\033[0m] %(message)s',
@@ -77,9 +68,6 @@ def create_logger(logging_dir):
 
 
 def requires_grad(model, flag=True):
-    """
-    Set requires_grad flag for all parameters in a model.
-    """
     for p in model.parameters():
         p.requires_grad = flag
 
@@ -89,11 +77,8 @@ def requires_grad(model, flag=True):
 #################################################################################
 
 def main(args):    
-    # set accelerator
-    # 设置加速器
-    import os
     os.environ["WANDB_MODE"] = "offline"
-    wandb.login(key='0358ab0d1a246d95e54a7dbec348a95f3a5f1a80')
+    wandb.login(key='API_KEY')
     logging_dir = Path(args.output_dir, args.logging_dir)
     accelerator_project_config = ProjectConfiguration(
         project_dir=args.output_dir, logging_dir=logging_dir
@@ -107,15 +92,15 @@ def main(args):
     )
 
     if accelerator.is_main_process:
-        os.makedirs(args.output_dir, exist_ok=True)  # Make results folder (holds all experiment subfolders)
+        os.makedirs(args.output_dir, exist_ok=True)  
         save_dir = os.path.join(args.output_dir, args.exp_name)
         os.makedirs(save_dir, exist_ok=True)
         args_dict = vars(args)
-        # Save to a JSON file
+        
         json_dir = os.path.join(save_dir, "args.json")
         with open(json_dir, 'w') as f:
             json.dump(args_dict, f, indent=4)
-        checkpoint_dir = f"{save_dir}/checkpoints"  # Stores saved model checkpoints
+        checkpoint_dir = f"{save_dir}/checkpoints" 
         os.makedirs(checkpoint_dir, exist_ok=True)
         logger = create_logger(save_dir)
         logger.info(f"Experiment directory created at {save_dir}")
@@ -127,7 +112,7 @@ def main(args):
         set_seed(args.seed + accelerator.process_index)
     
     # Create model:
-    assert args.resolution % 8 == 0, "Image size must be divisible by 8 (for the VAE encoder)."
+    assert args.resolution % 8 == 0, 
     latent_size = args.resolution // 8
 
     if args.enc_type != 'None':
@@ -146,7 +131,7 @@ def main(args):
     )
     
     model = model.to(device)
-    ema = deepcopy(model).to(device)  # Create an EMA of the model for use after training
+    ema = deepcopy(model).to(device)
     requires_grad(ema, False)
     print(model)
 
@@ -182,10 +167,6 @@ def main(args):
         vae_path=args.vae_path,
         train_vae=False,
     )
-    '''data = load_data(
-        data_dir=args.data_dir,
-        batch_size=local_batch_size
-    )'''
     args.num_classes = next(data)
     print(args.num_classes)
 
@@ -193,9 +174,9 @@ def main(args):
         logger.info("creating data loader done")
     
     # Prepare models for training:
-    update_ema(ema, model, decay=0)  # Ensure EMA is initialized with synced weights
-    model.train()  # important! This enables embedding dropout for classifier-free guidance
-    ema.eval()  # EMA model should always be in eval mode
+    update_ema(ema, model, decay=0)
+    model.train()
+    ema.eval()
     
     # resume:
     global_step = 0
@@ -277,7 +258,6 @@ def main(args):
                 if accelerator.sync_gradients:
                     update_ema(ema, model) # change ema function
             
-            ### enter
             if accelerator.sync_gradients:
                 progress_bar.update(1)
                 global_step += 1                
@@ -307,8 +287,7 @@ def main(args):
         if global_step >= args.max_train_steps:
             break
 
-    model.eval()  # important! This disables randomized embedding dropout
-    # do any sampling/FID calculation/etc. with ema (or model) in eval mode ...
+    model.eval()
     
     accelerator.wait_for_everyone()
     if accelerator.is_main_process:
