@@ -31,16 +31,6 @@ def load_data(
     train_vae=False,
     hidden_dim=128,#128
 ):
-    """
-    For a dataset, create a generator over (cells, kwargs) pairs.
-
-    :param data_dir: a dataset directory.
-    :param batch_size: the batch size of each returned pair.
-    :param vae_path: the path to save autoencoder / read autoencoder checkpoint.
-    :param deterministic: if True, yield results in a deterministic order.
-    :param train_vae: train the autoencoder or use the autoencoder.
-    :param hidden_dim: the dimensions of latent space. If use pretrained weight, set 128
-    """
     if not data_dir:
         raise ValueError("unspecified data directory")
 
