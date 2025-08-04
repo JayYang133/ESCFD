@@ -71,10 +71,9 @@ def get_args_parser():
                         help='epochs to warmup LR')
 
     # Dataset parameters
-    parser.add_argument('--data_dir', default='data/1M_neurons_neuron20k.h5', type=str,#data/pbmc68k/data/pbmc68k/filtered_matrices_mex/hg19 data/human_lung/data/Human_PF_Lung/human_lung.h5ad data/muris/data/tabula_muris/all.h5ad 	1M_neurons_neuron20k.h5
+    parser.add_argument('--data_dir', default='data/1M_neurons_neuron20k.h5', type=str,
                         help='dataset path')
-    parser.add_argument("--vae_path", type=str, default="data/brainsmall_AE/model_seed=0_step=199999.pt")#data/pbmc_AE/model_seed=0_step=199999.pt data/muris_AE/model_seed=0_step=199999.pt
-
+    parser.add_argument("--vae_path", type=str, default="data/brainsmall_AE/model_seed=0_step=199999.pt")
     parser.add_argument('--output_dir', default='../ckpts',
                         help='path where to save, empty for no saving')
     parser.add_argument('--log_dir', default='./output_dir',
