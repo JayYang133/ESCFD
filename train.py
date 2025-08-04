@@ -38,8 +38,6 @@ def sample_posterior(moments, latents_scale=1., latents_bias=0.):
     device = moments.device
     
     mean, std = torch.chunk(moments, 2, dim=1)
-    #print("mean",mean.shape)
-    #print("std", std.shape)
     z = mean + std * torch.randn_like(mean)
     z = (z * latents_scale + latents_bias) 
     return z 
@@ -52,7 +50,6 @@ def update_ema(ema_model, model, decay=0.9999):
 
     for name, param in model_params.items():
         name = name.replace("module.", "")
-        # TODO: Consider applying only to params that require_grad to avoid small numerical changes of pos_embed
         ema_params[name].mul_(decay).add_(param.data, alpha=1 - decay)
 
 
