@@ -1,6 +1,6 @@
 # ESCFD: Probabilistic Flow Diffusion Model for Accelerated High-Quality Single-Cell RNA-seq Data Synthesis
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15515721.svg)](https://doi.org/10.5281/zenodo.15515721)
-[[![Paper](https://dl.acm.org/doi/10.1145/3711896.3736942)]
+[![Paper](https://img.shields.io/badge/arXiv%20paper-2410.06940-b31b1b.svg)](https://dl.acm.org/doi/10.1145/3711896.3736942)
 ### 1. Environment 
 The environment settings refer to [scDiffusion](https://github.com/EperLuo/scDiffusion?tab=readme-ov-file) and [mae-vit](https://github.com/facebookresearch/mae)
 
