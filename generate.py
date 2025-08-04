@@ -25,10 +25,7 @@ from samplers import euler_sampler, euler_maruyama_sampler
 from utils import load_legacy_checkpoints, download_model
 
 def main(args):
-    """
-    Run sampling.
-    """
-    torch.backends.cuda.matmul.allow_tf32 = args.tf32  # True: fast but may lead to some small numerical differences
+    torch.backends.cuda.matmul.allow_tf32 = args.tf32  
     torch.set_grad_enabled(False)
 
     # Setup device:
@@ -39,9 +36,9 @@ def main(args):
     
     # Load model:
     block_kwargs = {"fused_attn": args.fused_attn, "qk_norm": args.qk_norm}
-    latent_size = args.resolution // 8 #latent_size 是输入尺寸的1/8
+    latent_size = args.resolution // 8 
     model = scDiT_models[args.model](
-        input_size=latent_size,#模型输入是VAE的潜在空间。
+        input_size=latent_size,
         num_classes=args.num_classes,
         use_cfg = True,
         z_dims = [int(z_dim) for z_dim in args.projector_embed_dims.split(',')],
@@ -56,7 +53,7 @@ def main(args):
             state_dict=state_dict, encoder_depth=args.encoder_depth
             )
     model.load_state_dict(state_dict)
-    model.eval()  # important!
+    model.eval() 
 
     assert args.cfg_scale >= 1.0, "In almost all cases, cfg_scale be >= 1.0"
     using_cfg = args.cfg_scale > 1.0
@@ -70,13 +67,12 @@ def main(args):
     os.makedirs(sample_folder_dir, exist_ok=True)
     print(f"Saving .png samples at {sample_folder_dir}")
 
-    # Figure out how many samples we need to generate and how many iterations we need to run:
     n = args.per_proc_batch_size
     total_samples = args.num_fid_samples
     iterations = int(total_samples // n)
     pbar = tqdm(range(iterations))
     total = 0
-    #########sample##########
+
     for c in range(args.num_classes+1):
         all_samples = []
 
