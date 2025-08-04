@@ -7,8 +7,6 @@ import torch
 from VAE_model import VAE
 import sys
 sys.path.append("..")
-#from guided_diffusion.cell_datasets import load_data
-#from guided_diffusion.cell_datasets_muris import load_data
 from guided_diffusion.cell_datasets_pbmc import load_data
 #from guided_diffusion.cell_datasets_loader import load_data
 
