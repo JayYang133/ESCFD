@@ -29,9 +29,6 @@ def modulate(x, shift, scale):
 #               Embedding Layers for Timesteps and Class Labels                 #
 #################################################################################            
 class TimestepEmbedder(nn.Module):
-    """
-    Embeds scalar timesteps into vector representations.
-    """
     def __init__(self, hidden_size, frequency_embedding_size=256):
         super().__init__()
         self.mlp = nn.Sequential(
@@ -43,15 +40,6 @@ class TimestepEmbedder(nn.Module):
     
     @staticmethod
     def positional_embedding(t, dim, max_period=10000):
-        """
-        Create sinusoidal timestep embeddings.
-        :param t: a 1-D Tensor of N indices, one per batch element.
-                          These may be fractional.
-        :param dim: the dimension of the output.
-        :param max_period: controls the minimum frequency of the embeddings.
-        :return: an (N, D) Tensor of positional embeddings.
-        """
-        # https://github.com/openai/glide-text2im/blob/main/glide_text2im/nn.py
         half = dim // 2
         freqs = torch.exp(
             -math.log(max_period) * torch.arange(start=0, end=half, dtype=torch.float32) / half
@@ -70,9 +58,6 @@ class TimestepEmbedder(nn.Module):
 
 
 class LabelEmbedder(nn.Module):
-    """
-    Embeds class labels into vector representations. Also handles label dropout for classifier-free guidance.
-    """
     def __init__(self, num_classes, hidden_size, dropout_prob):
         super().__init__()
         use_cfg_embedding = dropout_prob > 0
@@ -81,9 +66,6 @@ class LabelEmbedder(nn.Module):
         self.dropout_prob = dropout_prob
 
     def token_drop(self, labels, force_drop_ids=None):
-        """
-        Drops labels to enable classifier-free guidance.
-        """
         if force_drop_ids is None:
             drop_ids = torch.rand(labels.shape[0], device=labels.device) < self.dropout_prob
         else:
@@ -104,9 +86,6 @@ class LabelEmbedder(nn.Module):
 #################################################################################
 
 class scDiTBlock(nn.Module):
-    """
-    A SiT block with adaptive layer norm zero (adaLN-Zero) conditioning.
-    """
     def __init__(self, hidden_size, num_heads, mlp_ratio=4.0, **block_kwargs):
         super().__init__()
         self.norm1 = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
@@ -138,9 +117,6 @@ class scDiTBlock(nn.Module):
 
 
 class FinalLayer(nn.Module):
-    """
-    The final layer of SiT.
-    """
     def __init__(self, hidden_size, patch_size, out_channels):
         super().__init__()
         self.norm_final = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
@@ -159,15 +135,12 @@ class FinalLayer(nn.Module):
 
 
 class scDiT(nn.Module):
-    """
-    Diffusion model with a Transformer backbone.
-    """
     def __init__(
         self,
         path_type='edm',
         input_size=32,
         patch_size=4,
-        in_channels=2,#2
+        in_channels=2,
         hidden_size=1152,
         decoder_hidden_size=768,
         encoder_depth=8,
