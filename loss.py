@@ -3,15 +3,9 @@ import numpy as np
 import torch.nn.functional as F
 
 def mean_flat(x):
-    """
-    Take the mean over all non-batch dimensions.
-    """
     return torch.mean(x, dim=list(range(1, len(x.size()))))
 
 def sum_flat(x):
-    """
-    Take the mean over all non-batch dimensions.
-    """
     return torch.sum(x, dim=list(range(1, len(x.size()))))
 
 class SILoss:
@@ -73,7 +67,7 @@ class SILoss:
         if self.prediction == 'v':
             model_target = d_alpha_t * images + d_sigma_t * noises
         else:
-            raise NotImplementedError()  # TODO: 添加 x 或 eps 预测
+            raise NotImplementedError()  
         model_output, zs_tilde = model(model_input, time_input.flatten(), **model_kwargs)
         denoising_loss = mean_flat((model_output - model_target) ** 2)
 
