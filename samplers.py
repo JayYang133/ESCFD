@@ -15,7 +15,7 @@ def expand_t_like_x(t, x_cur):
 def get_score_from_velocity(vt, xt, t, path_type="linear"):
     """Wrapper function: transfrom velocity prediction model to score
     Args:
-        velocity: [batch_dim, ...] shaped tensor; velocity model output 速度模型输出
+        velocity: [batch_dim, ...] shaped tensor; velocity model output 
         x: [batch_dim, ...] shaped tensor; x_t data point
         t: [batch_dim,] time tensor
     """
@@ -55,7 +55,6 @@ def euler_sampler(#ODE
         guidance_high=1.0,
         path_type="linear",
 ):
-    # 设置条件
     if cfg_scale > 1.0:
         y_null = torch.tensor([num_classes] * y.size(0), device=y.device)
     _dtype = latents.dtype
@@ -115,7 +114,6 @@ def euler_maruyama_sampler(#SDE
         guidance_high=1.0,
         path_type="linear",
 ):
-    # 设置条件
     if cfg_scale > 1.0:
         y_null = torch.tensor([num_classes] * y.size(0), device=y.device)
 
@@ -154,7 +152,6 @@ def euler_maruyama_sampler(#SDE
 
             x_next = x_cur + d_cur * dt + torch.sqrt(diffusion) * deps
 
-    #
     t_cur, t_next = t_steps[-2], t_steps[-1]
     dt = t_next - t_cur
     x_cur = x_next
