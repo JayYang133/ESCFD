@@ -29,21 +29,10 @@ def parse_args():
     parser.add_argument('--comment', default="", type=str, help="Comment to pass to scheduler")
     return parser.parse_args()
 
-
-'''def get_shared_folder() -> Path:
-    user = os.getenv("USER")
-    if Path("/checkpoint/").is_dir():
-        p = Path(f"/checkpoint/{user}/experiments")
-        p.mkdir(exist_ok=True)
-        return p
-    raise RuntimeError("No shared folder available")'''
     
 def get_shared_folder() -> Path:
-    # 获取当前脚本所在的目录
     current_dir = Path(__file__).resolve().parent
-    # 构造共享文件夹路径
     shared_folder = current_dir / "experiments"
-    # 创建目录（如果它不存在）
     shared_folder.mkdir(exist_ok=True)
     return shared_folder
 
