@@ -7,8 +7,8 @@ import torch
 from VAE_model import VAE
 import sys
 sys.path.append("..")
-from guided_diffusion.cell_datasets_pbmc import load_data
-#from guided_diffusion.cell_datasets_loader import load_data
+from ..cell_datasets_pbmc import load_data
+#from ..cell_datasets_loader import load_data
 
 torch.autograd.set_detect_anomaly(True)
 import random
