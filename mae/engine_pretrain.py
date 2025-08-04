@@ -70,9 +70,6 @@ def train_one_epoch(model: torch.nn.Module,
     
             loss_value_reduce = misc.all_reduce_mean(loss_value)
             if log_writer is not None and (data_iter_step + 1) % accum_iter == 0:
-                """ We use epoch_1000x as the x-axis in tensorboard.
-                This calibrates different curves when batch size changes.
-                """
                 epoch_1000x = int((data_iter_step / len(data_loader) + epoch) * 1000)
                 log_writer.add_scalar('train_loss', loss_value_reduce, epoch_1000x)
                 log_writer.add_scalar('lr', lr, epoch_1000x)
@@ -80,7 +77,6 @@ def train_one_epoch(model: torch.nn.Module,
     elif args.data_name == 'brainsmall':           
         for data_iter_step, samples in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
 
-            # we use a per iteration (instead of per epoch) lr scheduler
             if data_iter_step % accum_iter == 0:
                 lr_sched.adjust_learning_rate(optimizer, data_iter_step / len(data_loader) + epoch, args)
     
@@ -111,15 +107,11 @@ def train_one_epoch(model: torch.nn.Module,
     
             loss_value_reduce = misc.all_reduce_mean(loss_value)
             if log_writer is not None and (data_iter_step + 1) % accum_iter == 0:
-                """ We use epoch_1000x as the x-axis in tensorboard.
-                This calibrates different curves when batch size changes.
-                """
                 epoch_1000x = int((data_iter_step / len(data_loader) + epoch) * 1000)
                 log_writer.add_scalar('train_loss', loss_value_reduce, epoch_1000x)
                 log_writer.add_scalar('lr', lr, epoch_1000x)        
 
 
-    # gather the stats from all processes
     metric_logger.synchronize_between_processes()
     print("Averaged stats:", metric_logger)
     return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
