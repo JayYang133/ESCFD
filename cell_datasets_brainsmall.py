@@ -14,10 +14,6 @@ from VAE.VAE_model import VAE
 from sklearn.preprocessing import LabelEncoder
 
 def stabilize(expression_matrix):
-    ''' Use Anscombes approximation to variance stabilize Negative Binomial data
-    See https://f1000research.com/posters/4-1041 for motivation.
-    Assumes columns are samples, and rows are genes
-    '''
     from scipy import optimize
     phi_hat, _ = optimize.curve_fit(lambda mu, phi: mu + phi * mu ** 2, expression_matrix.mean(1), expression_matrix.var(1))
 
@@ -45,22 +41,11 @@ def load_data(
     train_vae=False,
     hidden_dim=128,
 ):
-    """
-    For a dataset, create a generator over (cells, kwargs) pairs.
-
-    :param data_dir: a dataset directory.
-    :param batch_size: the batch size of each returned pair.
-    :param vae_path: the path to save autoencoder / read autoencoder checkpoint.
-    :param deterministic: if True, yield results in a deterministic order.
-    :param train_vae: train the autoencoder or use the autoencoder.
-    :param hidden_dim: the dimensions of latent space. If use pretrained weight, set 128
-    """
     if not data_dir:
         raise ValueError("unspecified data directory")
 
     adata = sc.read_10x_h5(data_dir)
     
-    # preporcess the data. modify this part if use your own dataset. the gene expression must first norm1e4 then log1p
     sc.pp.filter_genes(adata, min_cells=3)
     sc.pp.filter_cells(adata, min_genes=10)
     adata.var_names_make_unique()
@@ -75,7 +60,6 @@ def load_data(
 
     cell_data = adata.X.toarray()
 
-    # turn the gene expression into latent space. use this if training the diffusion backbone.
     if not train_vae:
         num_gene = cell_data.shape[1]
         autoencoder = load_VAE(vae_path,num_gene,hidden_dim)
@@ -114,6 +98,5 @@ class CellDataset(Dataset):
 
     def __getitem__(self, idx):
         arr = self.data[idx]
-
         classes = np.array(self.class_name[idx], dtype=np.int64)
         return arr, classes
