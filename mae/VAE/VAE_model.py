@@ -8,7 +8,7 @@ import scanpy as sc
 from typing import List
 
 
-class Encoder(nn.Module):
+class Round_(nn.Module):
     """A class that encapsulates the encoder."""
     def __init__(
         self,
@@ -113,7 +113,7 @@ class Encoder(nn.Module):
         self.load_state_dict(state_dict, strict=False)
 
 
-class Decoder(nn.Module):
+class Map_(nn.Module):
     """A class that encapsulates the decoder."""
 
     def __init__(
@@ -240,7 +240,7 @@ class VAE(torch.nn.Module):
         self.dropout = 0.0
         self.input_dropout = 0.0
         self.residual = False
-        self.encoder = Encoder(
+        self.encoder = Round_(
             self.num_genes,
             latent_dim=self.hparams["dim"],
             hidden_dim=self.hidden_dim,
@@ -248,7 +248,7 @@ class VAE(torch.nn.Module):
             input_dropout=self.input_dropout,
             residual=self.residual,
         )
-        self.decoder = Decoder(
+        self.decoder = Map_(
             self.num_genes,
             latent_dim=self.hparams["dim"],
             hidden_dim=list(reversed(self.hidden_dim)),
