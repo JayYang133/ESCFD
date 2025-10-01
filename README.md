@@ -1,5 +1,8 @@
-# ESCFD
+<img width="1983" height="899" alt="屏幕截图 2025-07-07 133544" src="https://github.com/user-attachments/assets/f163348a-fc9a-4f95-9ebc-50c3e91e851a" /># ESCFD
 [![Paper](https://img.shields.io/badge/KDD2025-10.1145/3711896.3736942-blue.svg)](https://dl.acm.org/doi/10.1145/3711896.3736942)
+
+
+
 ### 1. Environment 
 The environment settings refer to [scDiffusion](https://github.com/EperLuo/scDiffusion?tab=readme-ov-file) and [mae-vit](https://github.com/facebookresearch/mae)
 
@@ -91,10 +94,7 @@ torchrun --nnodes=1 --nproc_per_node=1  generate.py --ckpt 'exps/linear-mae-b-en
 torchrun --nnodes=1 --nproc_per_node=1  generate.py --ckpt 'exps/linear-mae-b-enc8-brainsmall/checkpoints/0800000.pt' --model scDiT-B/4 --num-classes 8 --data_name 'brainsmall' --num-fid-samples 3072 --path-type=linear --encoder-depth=8 --projector-embed-dims=768 --per-proc-batch-size=128 --mode=ode --num-steps=50 --heun --cfg-scale=1.0 --guidance-high=1.0
 ```
 
-### 7. cell samples output and weight
-Our weight and datasets is comming soon.
 
-
-### 8. Acknowledgement
+### 7. Acknowledgement
 This code is mainly built upon [scDiffusion](https://github.com/EperLuo/scDiffusion?tab=readme-ov-file), [mae-vit](https://github.com/facebookresearch/mae) and [REPA](https://github.com/sihyun-yu/REPA) repositories.
 
