@@ -1,7 +1,7 @@
-<img width="1983" height="899" alt="屏幕截图 2025-07-07 133544" src="https://github.com/user-attachments/assets/f163348a-fc9a-4f95-9ebc-50c3e91e851a" /># ESCFD
+# ESCFD
 [![Paper](https://img.shields.io/badge/KDD2025-10.1145/3711896.3736942-blue.svg)](https://dl.acm.org/doi/10.1145/3711896.3736942)
 
-
+<img width="1983" height="899" alt="ESCFD" src="https://github.com/user-attachments/assets/f163348a-fc9a-4f95-9ebc-50c3e91e851a" />
 
 ### 1. Environment 
 The environment settings refer to [scDiffusion](https://github.com/EperLuo/scDiffusion?tab=readme-ov-file) and [mae-vit](https://github.com/facebookresearch/mae)
